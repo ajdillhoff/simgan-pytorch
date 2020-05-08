@@ -1,0 +1,13 @@
+{
+    "gpus": 1,
+    "batch_size": 16,
+    "num_workers": 8,
+    "patience": 3,
+    "lr": 1e-3,
+    "save_path": "./checkpoints/",
+    "nyu_path": "/home/alex/Data/nyu/dataset/train",
+    "synth_path": "/home/alex/Data/nyu_synth/train",
+    "ref_lambda": 0.1,
+    "steps_d": 200,
+    "steps_g": 500
+}
