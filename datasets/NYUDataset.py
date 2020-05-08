@@ -10,19 +10,15 @@ from PIL import Image
 class NYUDataset(torch.utils.data.Dataset):
     """NYU Dataset."""
 
-    def __init__(self, root_dir, sample_transform, target_transform,
-                 train=False):
+    def __init__(self, root_dir, sample_transform, train=False):
         """
         Args:
             root_dir (string): Path to the data.
             sample_transform (callable, optional): Optional transform to be
                 applied to the sample.
-            target_transform (callable, optional): Optional transform to be
-                applied to the target.
         """
         self.root_dir = root_dir
         self.sample_transform = sample_transform
-        self.target_transform = target_transform
         self.num_kp = 21
         self.train = train
 

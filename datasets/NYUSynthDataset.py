@@ -11,19 +11,15 @@ class NYUSynthDataset(torch.utils.data.Dataset):
     """Synthetic Dataset using Libhand with wrist. This is the model used in
     the paper by Tompson et al."""
 
-    def __init__(self, root_dir, sample_transform=None,
-                 target_transform=None):
+    def __init__(self, root_dir, sample_transform=None):
         """
         Args:
             root_dir (string): Path to the data.
             sample_transform (callable, optional): Optional transform to be
                 applied to the sample.
-            target_transform (callable, optional): Optional transform to be
-                applied to the target.
         """
         self.root_dir = root_dir
         self.sample_transform = sample_transform
-        self.target_transform = target_transform
         self.num_kp = 26
         self.proj = np.array([[1.302294, 0.0, 0.0, 0.0],
                               [0.0, 1.732051, 0.0, 0.0],

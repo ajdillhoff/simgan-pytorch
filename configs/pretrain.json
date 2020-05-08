@@ -10,8 +10,8 @@
     "nyu_val_path": "/home/alex/Data/nyu/dataset/test",
     "synth_val_path": "/home/alex/Data/nyu_synth/val",
     "ref_lambda": 0.1,
-    "steps_d": 1,
-    "steps_g": 2,
-    "max_steps": 0,
-    "val_check_interval": 1.0
+    "steps_d": 200,
+    "steps_g": 500,
+    "max_steps": 700,
+    "val_check_interval": 100
 }
