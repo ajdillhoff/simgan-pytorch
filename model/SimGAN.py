@@ -152,7 +152,7 @@ class SimGAN(pl.LightningModule):
             batch_size=self.hparams.batch_size,
             shuffle=True,
             num_workers=self.hparams.num_workers,
-            pin_memory=True
+            pin_memory=False
         )
 
         return loader
@@ -179,7 +179,7 @@ class SimGAN(pl.LightningModule):
             batch_size=self.hparams.batch_size,
             shuffle=False,
             num_workers=self.hparams.num_workers,
-            pin_memory=True
+            pin_memory=False
         )
 
         return loader

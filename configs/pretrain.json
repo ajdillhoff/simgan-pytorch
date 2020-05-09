@@ -9,7 +9,7 @@
     "synth_train_path": "/home/alex/Data/nyu_synth/train",
     "nyu_val_path": "/home/alex/Data/nyu/dataset/test",
     "synth_val_path": "/home/alex/Data/nyu_synth/val",
-    "ref_lambda": 0.1,
+    "ref_lambda": 0.01,
     "steps_d": 200,
     "steps_g": 500,
     "max_steps": 700,
