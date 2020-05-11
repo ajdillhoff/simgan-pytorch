@@ -25,12 +25,10 @@ def main(args):
 
     checkpoint_callback = ModelCheckpoint(filepath=hparams.save_path,
                                           monitor='val_loss', mode='min')
-    early_stop_callback = EarlyStopping('val_loss', patience=hparams.patience)
     trainer = Trainer(gpus=hparams.gpus,
                       max_steps=max_steps,
                       val_check_interval=hparams.val_check_interval,
                       checkpoint_callback=checkpoint_callback,
-                      early_stop_callback=early_stop_callback,
                       progress_bar_refresh_rate=1)
     trainer.fit(model)
 

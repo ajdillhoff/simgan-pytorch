@@ -102,6 +102,10 @@ class SimGAN(pl.LightningModule):
 
         d_loss = real_loss + fake_loss
 
+        img_vis = ref_imgs[0].detach().cpu()
+        img_vis = (img_vis + 1.0) / 2.0
+        self.logger.experiment.add_image('refined_images', img_vis)
+
         tqdm_dict = {'val_d_loss': d_loss}
         output = OrderedDict({
             'val_loss': d_loss,
