@@ -1,6 +1,6 @@
 {
-    "gpus": 1,
-    "batch_size": 16,
+    "gpus": 4,
+    "batch_size": 64,
     "num_workers": 8,
     "patience": 3,
     "learning_rate": 1e-3,
@@ -9,9 +9,9 @@
     "synth_train_path": "/home/alex/Data/nyu_synth/train",
     "nyu_val_path": "/home/alex/Data/nyu/dataset/test",
     "synth_val_path": "/home/alex/Data/nyu_synth/val",
-    "ref_lambda": 0.01,
+    "ref_lambda": 1e-5,
     "steps_d": 200,
     "steps_g": 500,
     "max_steps": 700,
-    "val_check_interval": 100
+    "val_check_interval": 700
 }

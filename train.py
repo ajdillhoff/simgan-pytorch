@@ -13,7 +13,6 @@ def main(args):
     hparams = Namespace(**json.load(open((args.config))))
 
     if args.resume:
-        print("LOADING FROM CHECKPOINT")
         model = SimGAN.load_from_checkpoint(args.resume)
         model.hparams = hparams
     else:

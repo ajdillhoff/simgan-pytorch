@@ -22,6 +22,8 @@ class SimGAN(pl.LightningModule):
 
         self.img_buffer = None
 
+        self.val_epoch = 0
+
     def forward(self, x):
         return self.refiner(x)
 
@@ -51,7 +53,7 @@ class SimGAN(pl.LightningModule):
             # Process real images
             real_pred = self.discriminator(real_imgs).view(-1, 2)
 
-            valid = torch.ones(real_pred.size(0), dtype=torch.long)
+            valid = torch.zeros(real_pred.size(0), dtype=torch.long)
             if self.on_gpu:
                 valid = valid.cuda(real_imgs.device.index)
 
@@ -61,7 +63,7 @@ class SimGAN(pl.LightningModule):
             ref_imgs = self.refiner(synth_imgs)
             synth_pred = self.discriminator(ref_imgs).view(-1, 2)
 
-            fake = torch.zeros(synth_pred.size(0), dtype=torch.long)
+            fake = torch.ones(synth_pred.size(0), dtype=torch.long)
             if self.on_gpu:
                 fake = fake.cuda(ref_imgs.device.index)
 
@@ -83,7 +85,7 @@ class SimGAN(pl.LightningModule):
         # Process real images
         real_pred = self.discriminator(real_imgs).view(-1, 2)
 
-        valid = torch.ones(real_pred.size(0), dtype=torch.long)
+        valid = torch.zeros(real_pred.size(0), dtype=torch.long)
         if self.on_gpu:
             valid = valid.cuda(real_imgs.device.index)
 
@@ -94,7 +96,7 @@ class SimGAN(pl.LightningModule):
         ref_loss = self.refiner_loss(synth_imgs, ref_imgs)
         synth_pred = self.discriminator(synth_imgs).view(-1, 2)
 
-        fake = torch.zeros(synth_pred.size(0), dtype=torch.long)
+        fake = torch.ones(synth_pred.size(0), dtype=torch.long)
         if self.on_gpu:
             fake = fake.cuda(ref_imgs.device.index)
 
@@ -104,9 +106,13 @@ class SimGAN(pl.LightningModule):
 
         img_vis = ref_imgs[0].detach().cpu()
         img_vis = (img_vis + 1.0) / 2.0
-        self.logger.experiment.add_image('refined_images', img_vis)
+        self.logger.experiment.add_image('refined_images',
+                                         img_vis, self.val_epoch)
 
-        tqdm_dict = {'val_d_loss': d_loss}
+        tqdm_dict = {
+            'val_d_loss': d_loss,
+            'val_ref_loss': ref_loss
+        }
         output = OrderedDict({
             'val_loss': d_loss,
             'progress_bar': tqdm_dict,
@@ -115,6 +121,7 @@ class SimGAN(pl.LightningModule):
         return output
 
     def validation_epoch_end(self, outputs):
+        self.val_epoch += 1
         avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
         tensorboard_log = {'val_loss': avg_loss}
         output = OrderedDict({
@@ -126,7 +133,7 @@ class SimGAN(pl.LightningModule):
     def configure_optimizers(self):
         lr = self.hparams.learning_rate
 
-        opt_r = torch.optim.Adam(self.refiner.parameters(), lr=lr)
+        opt_r = torch.optim.SGD(self.refiner.parameters(), lr=lr)
         opt_d = torch.optim.SGD(self.discriminator.parameters(), lr=lr)
 
         return (
